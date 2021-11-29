@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Sorting Visualizer</title>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="nav-bar">
+        <h1 class="title">Sorting Visualizer</h1>
+        <div class="toolbox">
+          <select name="size" id="size" class="size-select">
+            <option value="none">Input Size</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+          </select>
+          <div class="speed-range">
+            <span class="range-value" id="range-value">1</span>
+            <div class="range-flex">
+              <span>Speed</span>
+              <input
+                type="range"
+                name="range"
+                id="range"
+                value="0"
+                class="range"
+                min="1"
+                max="100"
+                onchange="updateRange(this.value)"
+                onmousemove="updateRange(this.value)"
+              />
+            </div>
+          </div>
+          <select name="algo" id="algo" class="algo-select">
+            <option value="none">Algorithm</option>
+            <option value="Insertion Sort">Insertion Sort</option>
+            <option value="Selection Sort">Selection Sort</option>
+            <option value="Bubble Sort">Bubble Sort</option>
+            <option value="Merge Sort">Merge Sort</option>
+            <option value="Quick Sort">Quick Sort</option>
+          </select>
+          <button class="btn disabled" id="start" disabled>Start</button>
+          <button class="btn" id="reset">Reset</button>
+        </div>
+      </nav>
+      <main class="grid">
+        <section class="left not-selected">
+          <button id="regenerator" class="btn-gen btn">Regenerate</button>
+          <div class="attention">Select an input size to generate random bars</div>
+          <div class="bars"></div>
+        </section>
+        <div class="stats">
+          <h2 class="subtitle">Details</h2>
+          <div class="details-size">Input Size: <span>Not selected</span></div>
+          <div class="details-speed">Speed: <span>1</span></div>
+          <div class="details-algo">Algorithm: <span>Not selected</span></div>
+          <div class="details-status">Status: <span>Not Ready! Select Parameters</span></div>
+        </section>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
