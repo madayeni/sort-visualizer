@@ -48,22 +48,24 @@
             <option value="Merge Sort">Merge Sort</option>
             <option value="Quick Sort">Quick Sort</option>
           </select>
-          <button class="btn disabled" id="start" disabled>Start</button>
+          <button class="btn disabled" id="start" disabled>Sort</button>
           <button class="btn" id="reset">Reset</button>
         </div>
       </nav>
       <main class="grid">
         <section class="left not-selected">
           <button id="regenerator" class="btn-gen btn">Regenerate</button>
-          <div class="attention">Select an input size to generate random bars</div>
+          <div class="attention">
+            Select an input size to generate random bars
+          </div>
           <div class="bars"></div>
         </section>
-        <div class="stats">
-          <h2 class="subtitle">Details</h2>
+        <section class="stats">
+          <h2 class="tc subtitle">Details</h2>
           <div class="details-size">Input Size: <span>Not selected</span></div>
           <div class="details-speed">Speed: <span>1</span></div>
           <div class="details-algo">Algorithm: <span>Not selected</span></div>
-          <div class="details-status">Status: <span>Not Ready! Select Parameters</span></div>
+          <div class="tc details-status">NOT READY!</div>
         </section>
       </main>
     </div>

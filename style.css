@@ -83,7 +83,7 @@ select.algo-select {
   width: 250px;
   height: 15px;
   -webkit-appearance: none;
-  background: beige;
+  background: rgb(175, 175, 108);
   outline: none;
   border-radius: 15px;
   overflow: hidden;
@@ -177,12 +177,16 @@ select.algo-select {
 }
 
 .grid .stats {
-  background: rgb(197, 108, 20);
+  background: lightblue;
+  padding: 10px;
 }
 
 .subtitle {
-  text-align: center;
   margin: 10px 0;
+}
+
+.tc {
+  text-align: center;
 }
 
 .bars {
@@ -194,8 +198,13 @@ select.algo-select {
 }
 
 .bar {
-  width: 20px;
+  width: 30px;
   background-color: pink;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+}
+
+.mark {
+  border: 1px solid palevioletred;
 }
 
 .btn-gen {
@@ -215,4 +224,19 @@ select.algo-select {
 .btn-gen:hover {
   background-color: rgb(34, 34, 109, 0.8);
   opacity: 0.8;
+}
+
+.details-status {
+  margin: 10px auto;
+  padding: 10px 18px;
+  background-color: red;
+  color: white;
+  font-size: 18px;
+  width: 75%;
+  font-weight: 400;
+}
+
+.details-status.ready {
+  background-color: green;
+  font-weight: 700;
 }
