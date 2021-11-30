@@ -14,7 +14,7 @@ let running = false;
 let ready = false;
 let size = "none";
 let algo = "none";
-let speed = "1";
+let speed = "20";
 listBars = [];
 
 const enableBtn = (btn) => {
@@ -174,43 +174,45 @@ const selectionSort = async () => {
   }
 };
 
+const merge = async (start, mid, end) => {
+  temp = [];
+  i = start;
+  j = mid + 1;
+  while (i <= mid && j <= end) {
+    if (listBars[i] < listBars[j]) {
+      temp.push(listBars[i]);
+      i++;
+    } else {
+      temp.push(listBars[j]);
+      j++;
+    }
+  }
+  while (i <= mid) {
+    temp.push(listBars[i]);
+    i++;
+  }
+  while (j <= end) {
+    temp.push(listBars[j]);
+    j++;
+  }
+  console.log("temp", temp);
+  listBars = [...temp];
+};
+
 const mergeHelper = async (start, end) => {
+  console.log(start, end);
   if (end > start) {
-    const mid = Math.floor((end + start) / 2);
-    mergeHelper(start, mid);
-    mergeHelper(mid + 1, end);
-
-    let i = start;
-    let j = mid + 1;
-    result = [];
-
-    while (i <= mid && j <= end) {
-      if (listBars[i] < listBars[j]) {
-        result.push(listBars[i++]);
-        updateDOM(i - 1, j);
-      } else {
-        result.push(listBars[j++]);
-        updateDOM(i, j - 1);
-      }
-      await pause(1000 / parseInt(speed));
-    }
-    while (i <= mid) {
-      result.push(listBars[i++]);
-      await pause(1000 / parseInt(speed));
-    }
-    while (j <= end) {
-      result.push(listBars[j++]);
-      await pause();
-    }
-    for (let i = start; i <= end; i++) {
-      listBars[i] = result[i - start];
-    }
+    const mid = Math.floor((start + end) / 2);
+    await mergeHelper(start, mid);
+    await mergeHelper(mid + 1, end);
+    console.log(`merging ${start} and ${end}`);
+    await merge(start, mid, end);
   }
 };
 
 const mergeSort = async () => {
   console.log(listBars);
-  mergeHelper(0, listBars.length - 1);
+  await mergeHelper(0, listBars.length - 1);
   console.log(listBars);
 };
 
