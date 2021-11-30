@@ -175,68 +175,76 @@ const selectionSort = async () => {
 };
 
 const merge = async (start, mid, end) => {
-  temp = [];
-  i = start;
-  j = mid + 1;
-  while (i <= mid && j <= end) {
-    if (listBars[i] < listBars[j]) {
-      temp.push(listBars[i]);
-      i++;
+  const temp = [];
+  let left = start;
+  let right = mid + 1;
+  let cnt = 0;
+  const inds = {};
+  while (left <= mid && right <= end) {
+    if (listBars[left] < listBars[right]) {
+      temp.push(listBars[left]);
+      inds[cnt++] = left++;
     } else {
-      temp.push(listBars[j]);
-      j++;
+      temp.push(listBars[right]);
+      inds[cnt++] = right++;
     }
   }
-  while (i <= mid) {
-    temp.push(listBars[i]);
-    i++;
+  while (left <= mid) {
+    temp.push(listBars[left]);
+    inds[cnt++] = left++;
   }
-  while (j <= end) {
-    temp.push(listBars[j]);
-    j++;
+  while (right <= end) {
+    temp.push(listBars[right]);
+    inds[cnt++] = right++;
   }
-  console.log("temp", temp);
-  listBars = [...temp];
+
+  cnt = 0;
+  for (let i = start; i <= end; i++) {
+    listBars[i] = temp[cnt];
+    updateDOM(i, inds[cnt++]);
+    await pause(1000 / parseInt(speed));
+  }
 };
 
 const mergeHelper = async (start, end) => {
-  console.log(start, end);
   if (end > start) {
     const mid = Math.floor((start + end) / 2);
     await mergeHelper(start, mid);
     await mergeHelper(mid + 1, end);
-    console.log(`merging ${start} and ${end}`);
     await merge(start, mid, end);
   }
 };
 
 const mergeSort = async () => {
-  console.log(listBars);
   await mergeHelper(0, listBars.length - 1);
-  console.log(listBars);
 };
 
-const partition = async (start, end, keyInd) => {
+const partition = async (start, end, p) => {
   let i = start;
   let j = end;
-  let key = listBars[keyInd];
+  let key = listBars[p];
+  let keyInd = p;
   while (i < j) {
     while (i < keyInd) {
       if (listBars[i] < key) {
         i++;
       } else {
         swap(i, j);
-        if (j === keyIndex) {
-          keyIndex = i;
+        updateDOM(i, j);
+        await pause(1000 / parseInt(speed));
+        if (j === keyInd) {
+          keyInd = i;
         }
         j--;
       }
     }
     while (j > keyInd) {
-      if (listBars[j] > keyInd) {
+      if (listBars[j] > key) {
         j--;
       } else {
         swap(i, j);
+        updateDOM(i, j);
+        await pause(1000 / parseInt(speed));
         if (i === keyInd) {
           keyInd = j;
         }
@@ -250,16 +258,14 @@ const partition = async (start, end, keyInd) => {
 const quickHelper = async (start, end) => {
   if (end > start) {
     let p = start;
-    p = partition(start, end, p);
-    quickHelper(start, p - 1);
-    quickHelper(p + 1, end);
+    p = await partition(start, end, p);
+    await quickHelper(start, p - 1);
+    await quickHelper(p + 1, end);
   }
 };
 
 const quickSort = async () => {
-  console.log(listBars);
-  quickHelper(0, listBars.length - 1);
-  console.log(listBars);
+  await quickHelper(0, listBars.length - 1);
 };
 
 const swap = (j, k) => {
