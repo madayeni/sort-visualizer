@@ -109,8 +109,7 @@ const done = () => {
 };
 
 const reset = () => {
-  bars.innerHTML = "";
-  populate();
+  location.reload();
 };
 
 const updateDOM = (j, k) => {
