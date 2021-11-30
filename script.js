@@ -17,6 +17,35 @@ let algo = "none";
 let speed = "1";
 listBars = [];
 
+const enableBtn = (btn) => {
+  btn.disabled = false;
+  btn.classList.remove("disabled");
+};
+
+const disableBtn = (btn) => {
+  btn.disabled = true;
+  btn.classList.add("disabled");
+};
+
+const updateStatus = (msg) => {
+  statusEl.innerHTML = msg;
+  if (ready) {
+    statusEl.classList.add("ready");
+  } else {
+    statusEl.classList.remove("ready");
+  }
+};
+
+const enableSelect = (el) => {
+  el.disabled = false;
+  el.style.cursor = "pointer";
+};
+
+const disableSelect = (el) => {
+  el.disabled = true;
+  el.style.cursor = "not-allowed";
+};
+
 const updateRange = (val) => {
   document.getElementById("range-value").innerHTML = val;
   document.querySelector(".grid .stats div:nth-child(3) span").innerHTML = val;
@@ -29,62 +58,54 @@ const checkParams = () => {
     ready = true;
   }
   if (ready) {
-    statusEl.classList.add("ready");
-    startBtn.disabled = false;
-    startBtn.classList.remove("disabled");
-    statusEl.innerHTML = "READY!";
+    enableBtn(startBtn);
+    updateStatus("READY!");
   } else {
-    statusEl.classList.remove("ready");
-    startBtn.disabled = true;
-    startBtn.classList.add("disabled");
-    statusEl.innerHTML = "NOT READY!";
+    disableBtn(startBtn);
+    updateStatus("NOT READY!");
   }
 };
 
-const start = () => {
-  running = true;
-  genBtn.disabled = true;
-  genBtn.classList.add("disabled");
-  startBtn.disabled = true;
-  startBtn.classList.add("disabled");
-  statusEl.innerHTML = "SORTING...";
-  algoSel.disabled = true;
-  sizeSel.disabled = true;
-  algoSel.style.cursor = "not-allowed";
-  sizeSel.style.cursor = "not-allowed";
-
+const sort = async () => {
   switch (algo) {
     case "Selection Sort":
-      selectionSort();
+      await selectionSort();
       break;
     case "Insertion Sort":
-      insertionSort();
+      await insertionSort();
       break;
     case "Bubble Sort":
-      bubbleSort();
+      await bubbleSort();
       break;
     case "Merge Sort":
-      mergeSort();
+      await mergeSort();
       break;
     case "Quick Sort":
-      quickSort();
+      await quickSort();
       break;
     default:
       console.log("ERROR");
   }
+  done();
+};
+
+const start = () => {
+  running = true;
+  disableBtn(genBtn);
+  disableBtn(startBtn);
+  updateStatus("SORTING...");
+  disableSelect(algoSel);
+  disableSelect(sizeSel);
+  sort();
 };
 
 const done = () => {
-  startBtn.disabled = true;
-  startBtn.classList.add("disabled");
-  genBtn.classList.remove("disabled");
-  genBtn.disabled = false;
-  statusEl.innerHTML = "DONE!";
   running = false;
-  algoSel.disabled = false;
-  sizeSel.disabled = false;
-  algoSel.style.cursor = "pointer";
-  sizeSel.style.cursor = "pointer";
+  disableBtn(startBtn);
+  enableBtn(genBtn);
+  updateStatus("DONE!");
+  enableSelect(algoSel);
+  enableSelect(sizeSel);
 };
 
 const reset = () => {
@@ -121,7 +142,6 @@ const insertionSort = async () => {
       j--;
     }
   }
-  done();
 };
 
 const bubbleSort = async () => {
@@ -136,7 +156,6 @@ const bubbleSort = async () => {
       bars.children[j].classList.remove("mark");
     }
   }
-  done();
 };
 
 const selectionSort = async () => {
@@ -153,7 +172,6 @@ const selectionSort = async () => {
     updateDOM(i, minInd);
     await pause(1000 / parseInt(speed));
   }
-  done();
 };
 
 const mergeHelper = async (start, end) => {
@@ -190,13 +208,13 @@ const mergeHelper = async (start, end) => {
   }
 };
 
-const mergeSort = () => {
+const mergeSort = async () => {
   console.log(listBars);
   mergeHelper(0, listBars.length - 1);
   console.log(listBars);
 };
 
-const partition = (start, end, keyInd) => {
+const partition = async (start, end, keyInd) => {
   let i = start;
   let j = end;
   let key = listBars[keyInd];
@@ -227,7 +245,7 @@ const partition = (start, end, keyInd) => {
   return keyInd;
 };
 
-const quickHelper = (start, end) => {
+const quickHelper = async (start, end) => {
   if (end > start) {
     let p = start;
     p = partition(start, end, p);
@@ -236,7 +254,7 @@ const quickHelper = (start, end) => {
   }
 };
 
-const quickSort = () => {
+const quickSort = async () => {
   console.log(listBars);
   quickHelper(0, listBars.length - 1);
   console.log(listBars);
